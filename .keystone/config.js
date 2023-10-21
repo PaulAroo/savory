@@ -23,12 +23,14 @@ __export(keystone_exports, {
   default: () => keystone_default
 });
 module.exports = __toCommonJS(keystone_exports);
-var import_config = require("dotenv/config");
+var import_config2 = require("dotenv/config");
 var import_core2 = require("@keystone-6/core");
 
 // schema.ts
+var import_config = require("dotenv/config");
 var import_core = require("@keystone-6/core");
 var import_access = require("@keystone-6/core/access");
+var import_cloudinary = require("@keystone-6/cloudinary");
 var import_fields = require("@keystone-6/core/fields");
 var lists = {
   User: (0, import_core.list)({
@@ -43,6 +45,45 @@ var lists = {
       createdAt: (0, import_fields.timestamp)({
         defaultValue: { kind: "now" }
       })
+    }
+  }),
+  Product: (0, import_core.list)({
+    access: import_access.allowAll,
+    fields: {
+      name: (0, import_fields.text)({ validation: { isRequired: true } }),
+      description: (0, import_fields.text)({
+        ui: {
+          displayMode: "textarea"
+        }
+      }),
+      status: (0, import_fields.select)({
+        options: [
+          { label: "Draft", value: "DRAFT" },
+          { label: "Available", value: "AVAILABLE" },
+          { label: "Unavailable", value: "UNAVAILABLE" }
+        ],
+        defaultValue: "DRAFT",
+        ui: {
+          displayMode: "segmented-control",
+          createView: { fieldMode: "hidden" }
+        }
+      }),
+      price: (0, import_fields.integer)()
+    }
+  }),
+  ProductImage: (0, import_core.list)({
+    access: import_access.allowAll,
+    fields: {
+      image: (0, import_cloudinary.cloudinaryImage)({
+        cloudinary: {
+          cloudName: process.env.CLOUDINARY_CLOUD_NAME || "",
+          apiKey: process.env.CLOUDINARY_API_KEY || "",
+          apiSecret: process.env.CLOUDINARY_API_SECRET || "",
+          folder: process.env.CLOUDINARY_API_FOLDER
+        },
+        label: "Source"
+      }),
+      altText: (0, import_fields.text)()
     }
   })
 };
