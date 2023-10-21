@@ -12,5 +12,10 @@ export default withAuth(
 		},
 		lists,
 		session,
+		ui: {
+			isAccessAllowed: ({ session }) => {
+				return !!session?.data
+			},
+		},
 	})
 )
