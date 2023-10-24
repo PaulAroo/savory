@@ -56,6 +56,15 @@ var lists = {
           displayMode: "textarea"
         }
       }),
+      photo: (0, import_fields.relationship)({
+        ref: "ProductImage.product",
+        ui: {
+          displayMode: "cards",
+          cardFields: ["image", "altText"],
+          inlineCreate: { fields: ["image", "altText"] },
+          inlineEdit: { fields: ["image", "altText"] }
+        }
+      }),
       status: (0, import_fields.select)({
         options: [
           { label: "Draft", value: "DRAFT" },
@@ -69,6 +78,11 @@ var lists = {
         }
       }),
       price: (0, import_fields.integer)()
+    },
+    ui: {
+      listView: {
+        initialColumns: ["name", "description", "status", "price"]
+      }
     }
   }),
   ProductImage: (0, import_core.list)({
@@ -83,7 +97,13 @@ var lists = {
         },
         label: "Source"
       }),
-      altText: (0, import_fields.text)()
+      altText: (0, import_fields.text)(),
+      product: (0, import_fields.relationship)({ ref: "Product.photo" })
+    },
+    ui: {
+      listView: {
+        initialColumns: ["image", "altText", "product"]
+      }
     }
   })
 };
