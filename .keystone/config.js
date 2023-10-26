@@ -131,12 +131,109 @@ var session = (0, import_session.statelessSessions)({
   secret: sessionSecret
 });
 
+// seed-data/data.ts
+var products = [
+  {
+    name: "Yeti Hondo",
+    description: "soo nice",
+    status: "AVAILABLE",
+    price: 3423
+  },
+  {
+    name: "Airmax 270",
+    description: "Great shoes!",
+    status: "AVAILABLE",
+    price: 5234
+  },
+  {
+    name: "KITH Hoodie",
+    description: "Love this hoodie",
+    status: "AVAILABLE",
+    price: 23562
+  },
+  {
+    name: "Fanorak",
+    description: "Super hip. Comes in a number of colours",
+    status: "AVAILABLE",
+    price: 252342
+  },
+  {
+    name: "Nike Vapormax",
+    description: "Kind of squeaky on some floors",
+    status: "AVAILABLE",
+    price: 83456
+  },
+  {
+    name: "Yeti Cooler",
+    description: "Who spends this much on a cooler?!",
+    status: "AVAILABLE",
+    price: 75654
+  },
+  {
+    name: "Naked and Famous Denim",
+    description: "Japanese Denim, made in Canada",
+    status: "AVAILABLE",
+    price: 10924
+  },
+  {
+    name: "Rimowa Luggage",
+    description: "S T E A L T H",
+    status: "AVAILABLE",
+    price: 47734
+  },
+  {
+    name: "Black Hole ",
+    description: "Outdoorsy ",
+    status: "AVAILABLE",
+    price: 4534
+  },
+  {
+    name: "Nudie Belt",
+    description: "Sick design",
+    status: "AVAILABLE",
+    price: 5234
+  },
+  {
+    name: "Goose",
+    description: "Keep warm.",
+    status: "AVAILABLE",
+    price: 74544
+  },
+  {
+    name: "Ultraboost",
+    description: "blacked out",
+    status: "AVAILABLE",
+    price: 6344
+  }
+];
+
+// seed-data/index.ts
+async function insertSeedData(keystoneContext) {
+  console.log(`\u{1F331} Inserting Seed Data: ${products.length} Products`);
+  for (const product of products) {
+    console.log(`  \u{1F6CD}\uFE0F Adding Product: ${product.name}`);
+    await keystoneContext.db.Product.createOne({
+      data: {
+        ...product,
+        photo: { create: { altText: product.description } }
+      }
+    });
+  }
+  console.log(`\u2705 Seed Data Inserted: ${products.length} Products`);
+  process.exit();
+}
+
 // keystone.ts
 var keystone_default = withAuth(
   (0, import_core2.config)({
     db: {
       provider: "postgresql",
-      url: process.env.DATABASE_URL || ""
+      url: process.env.DATABASE_URL || "",
+      async onConnect(keystoneContext) {
+        if (process.argv.includes("--seed-data")) {
+          await insertSeedData(keystoneContext);
+        }
+      }
     },
     lists,
     session,
