@@ -2,11 +2,12 @@ import "dotenv/config"
 import { config } from "@keystone-6/core"
 
 import { lists } from "./schema"
+import { TypeInfo } from ".keystone/types"
 import { withAuth, session } from "./auth"
 import { insertSeedData } from "./seed-data"
 
 export default withAuth(
-	config({
+	config<TypeInfo>({
 		db: {
 			provider: "postgresql",
 			url: process.env.DATABASE_URL || "",
@@ -16,12 +17,17 @@ export default withAuth(
 				}
 			},
 		},
+
 		lists,
 		session,
 		ui: {
 			isAccessAllowed: ({ session }) => {
 				return !!session?.data
 			},
+		},
+
+		types: {
+			path: "./.keystone/types.ts",
 		},
 	})
 )

@@ -241,6 +241,9 @@ var keystone_default = withAuth(
       isAccessAllowed: ({ session: session2 }) => {
         return !!session2?.data;
       }
+    },
+    types: {
+      path: "./.keystone/types.ts"
     }
   })
 );

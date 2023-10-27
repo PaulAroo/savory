@@ -1,8 +1,10 @@
+import { products } from "./data"
+import { TypeInfo } from "../.keystone/types"
 import { KeystoneContext } from "@keystone-6/core/types"
 
-import { products } from "./data"
-
-export async function insertSeedData(keystoneContext: KeystoneContext) {
+export async function insertSeedData(
+	keystoneContext: KeystoneContext<TypeInfo>
+) {
 	console.log(`🌱 Inserting Seed Data: ${products.length} Products`)
 	for (const product of products) {
 		console.log(`  🛍️ Adding Product: ${product.name}`)
