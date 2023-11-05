@@ -8,6 +8,12 @@ import { insertSeedData } from "./seed-data"
 
 export default withAuth(
 	config<TypeInfo>({
+		server: {
+			cors: {
+				origin: [process.env.FRONTEND_URL],
+				credentials: true,
+			},
+		},
 		db: {
 			provider: "postgresql",
 			url: process.env.DATABASE_URL || "",
