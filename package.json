@@ -1,5 +1,5 @@
 {
-	"name": "ecom-backend",
+	"name": "savory",
 	"version": "0.0.0.dev-0",
 	"private": true,
 	"scripts": {
@@ -11,10 +11,10 @@
 	},
 	"dependencies": {
 		"@keystone-6/auth": "^7.0.0",
-		"@keystone-6/cloudinary": "^7.0.2",
-		"@keystone-6/core": "^5.0.0",
-		"@keystone-6/fields-document": "^7.0.0",
-		"dotenv": "^16.3.1",
-		"typescript": "^4.9.5"
+		"@keystone-6/cloudinary": "^7.0.3",
+		"@keystone-6/core": "^5.7.2",
+		"@keystone-6/fields-document": "^8.0.2",
+		"dotenv": "^16.4.2",
+		"typescript": "^5.3.3"
 	}
 }
