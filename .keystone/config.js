@@ -249,7 +249,7 @@ var keystone_default = withAuth(
       }
     },
     types: {
-      path: "./.keystone/types.ts"
+      path: ".keystone/types.ts"
     }
   })
 );

@@ -11,7 +11,7 @@ import {
 	relationship,
 } from "@keystone-6/core/fields"
 
-import type { Lists } from ".keystone/types"
+import type { Lists } from "./.keystone/types"
 
 export const lists: Lists = {
 	User: list({

@@ -2,9 +2,9 @@ import "dotenv/config"
 import { config } from "@keystone-6/core"
 
 import { lists } from "./schema"
-import { TypeInfo } from ".keystone/types"
 import { withAuth, session } from "./auth"
 import { insertSeedData } from "./seed-data"
+import { TypeInfo } from "./.keystone/types"
 
 export default withAuth(
 	config<TypeInfo>({
@@ -23,7 +23,6 @@ export default withAuth(
 				}
 			},
 		},
-
 		lists,
 		session,
 		ui: {
@@ -31,9 +30,8 @@ export default withAuth(
 				return !!session?.data
 			},
 		},
-
 		types: {
-			path: "./.keystone/types.ts",
+			path: ".keystone/types.ts",
 		},
 	})
 )
