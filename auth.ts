@@ -18,7 +18,7 @@ const { withAuth } = createAuth({
 	},
 })
 
-const sessionMaxAge = 60 * 60 * 24 * 30
+const sessionMaxAge = 60 * 60 * 24 * 7
 
 const session = statelessSessions({
 	maxAge: sessionMaxAge,
