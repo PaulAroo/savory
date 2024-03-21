@@ -128,7 +128,9 @@ var { withAuth } = (0, import_auth.createAuth)({
 var sessionMaxAge = 60 * 60 * 24 * 7;
 var session = (0, import_session.statelessSessions)({
   maxAge: sessionMaxAge,
-  secret: sessionSecret
+  secret: sessionSecret,
+  secure: true,
+  sameSite: "none"
 });
 
 // seed-data/data.ts
