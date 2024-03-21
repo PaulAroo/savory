@@ -130,8 +130,7 @@ var session = (0, import_session.statelessSessions)({
   maxAge: sessionMaxAge,
   secret: sessionSecret,
   secure: true,
-  sameSite: "none",
-  domain: process.env.FRONTEND_URL
+  sameSite: "none"
 });
 
 // seed-data/data.ts

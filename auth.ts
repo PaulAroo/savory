@@ -25,7 +25,6 @@ const session = statelessSessions({
 	secret: sessionSecret!,
 	secure: true,
 	sameSite: "none",
-	domain: process.env.FRONTEND_URL,
 })
 
 export { withAuth, session }
