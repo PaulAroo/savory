@@ -10,7 +10,7 @@ export default withAuth(
 	config<TypeInfo>({
 		server: {
 			cors: {
-				origin: [process.env.FRONTEND_URL],
+				origin: [process.env.FRONTEND_URL, /.+ember-.+\.vercel\.app.?$/],
 				credentials: true,
 			},
 		},
