@@ -119,7 +119,7 @@ if (!sessionSecret && process.env.NODE_ENV !== "production") {
 var { withAuth } = (0, import_auth.createAuth)({
   listKey: "User",
   identityField: "email",
-  sessionData: "id name email createdAt",
+  sessionData: "id name email",
   secretField: "password",
   initFirstItem: {
     fields: ["name", "email", "password"]

@@ -12,14 +12,12 @@ const { withAuth } = createAuth({
 	identityField: "email",
 	sessionData: "id name email",
 	secretField: "password",
-
 	initFirstItem: {
 		fields: ["name", "email", "password"],
 	},
 })
 
 const sessionMaxAge = 60 * 60 * 24 * 7
-
 const session = statelessSessions({
 	maxAge: sessionMaxAge,
 	secret: sessionSecret!,
