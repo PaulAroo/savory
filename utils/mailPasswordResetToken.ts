@@ -7,9 +7,11 @@ import { handleMailTransportError } from "./handleMailTransportError"
 export function mailPasswordResetToken({
 	email,
 	token,
+	username,
 }: {
 	token: string
 	email: string
+	username: string
 }) {
 	const transporter = createTransport({
 		host: process.env.MAIL_HOST,
@@ -24,7 +26,7 @@ export function mailPasswordResetToken({
 		from: process.env.MAIL_USER,
 		to: email,
 		subject: "🔏 Password Reset",
-		html: makeEmailTemplate(token, email),
+		html: makeEmailTemplate(token, email, username),
 	}
 
 	transporter.sendMail(message, handleMailTransportError)

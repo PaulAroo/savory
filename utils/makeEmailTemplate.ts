@@ -1,8 +1,10 @@
 import "dotenv/config"
 
-export function makeEmailTemplate(token: string, email: string) {
-	// TODO make username dynamic
-	const username = "test_user"
+export function makeEmailTemplate(
+	token: string,
+	email: string,
+	username: string
+) {
 	const resetLink = `
 		${process.env.FRONTEND_URL}/password-reset?email=${email}&token=${token}
 	`

@@ -23,7 +23,7 @@ __export(keystone_exports, {
   default: () => keystone_default
 });
 module.exports = __toCommonJS(keystone_exports);
-var import_config3 = require("dotenv/config");
+var import_config4 = require("dotenv/config");
 var import_core2 = require("@keystone-6/core");
 
 // schema.ts
@@ -114,12 +114,69 @@ var import_auth = require("@keystone-6/auth");
 var import_session = require("@keystone-6/core/session");
 
 // utils/mailPasswordResetToken.ts
-var import_config2 = require("dotenv/config");
+var import_config3 = require("dotenv/config");
 var import_nodemailer2 = require("nodemailer");
 
 // utils/makeEmailTemplate.ts
-function makeEmailTemplate(token) {
-  return `Hello there \u{1F44B}\u{1F3FB}, this is a test`;
+var import_config2 = require("dotenv/config");
+function makeEmailTemplate(token, email, username) {
+  const resetLink = `
+		${process.env.FRONTEND_URL}/password-reset?email=${email}&token=${token}
+	`;
+  return `
+	<!DOCTYPE html>
+	<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Password Reset</title>
+		<style>
+			body {
+				font-family: system-ui, -apple-system, sans-serif;
+				margin: 0;
+				padding: 0;
+			}
+			.container {
+				max-width: 37.5rem;
+				padding: 1.25rem;
+			}
+			.into {
+				text-transform: capitalize;
+			}
+			.button {
+				display: grid;
+				place-items: center;
+			}
+			.button a {
+				display: inline-block;
+				padding: 10px 20px;
+				background-color: #303030;
+				color: #ffffff;
+				text-decoration: none;
+				border-radius: 4px;
+			}
+			.footer {
+				margin-top: 20px;
+				text-align: center;
+				color: #999999;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<h1>Password Reset</h1>
+			<p class="inro">Hello ${username} \u{1F44B}\u{1F3FB},</p>
+			<p>You recently requested to reset your password. Click the button below to reset your password:</p>
+			<p class="button"><a href=${resetLink}>Reset Password</a></p>
+			<p>This token expires in 10 minutes, if you didn't request this change, you can safely ignore this email.</p>
+			<div class="footer">
+				<p>This email was sent by ember-oak.</p>
+			</div>
+		</div>
+	</body>
+	</html>
+	
+	`;
 }
 
 // utils/handleMailTransportError.ts
@@ -136,7 +193,8 @@ function handleMailTransportError(err, info) {
 // utils/mailPasswordResetToken.ts
 function mailPasswordResetToken({
   email,
-  token
+  token,
+  username
 }) {
   const transporter = (0, import_nodemailer2.createTransport)({
     host: process.env.MAIL_HOST,
@@ -150,7 +208,7 @@ function mailPasswordResetToken({
     from: process.env.MAIL_USER,
     to: email,
     subject: "\u{1F50F} Password Reset",
-    html: makeEmailTemplate(token)
+    html: makeEmailTemplate(token, email, username)
   };
   transporter.sendMail(message, handleMailTransportError);
 }
@@ -169,8 +227,13 @@ var { withAuth } = (0, import_auth.createAuth)({
     fields: ["name", "email", "password"]
   },
   passwordResetLink: {
-    sendToken({ token, identity }) {
-      mailPasswordResetToken({ token, email: identity });
+    async sendToken({ token, identity, itemId, context }) {
+      const user = await context.db.User.findOne({ where: { id: itemId } });
+      mailPasswordResetToken({
+        token,
+        email: identity,
+        username: user?.name || ""
+      });
     }
   }
 });
