@@ -1,6 +1,7 @@
 import { randomBytes } from "crypto"
 import { createAuth } from "@keystone-6/auth"
 import { statelessSessions } from "@keystone-6/core/session"
+import { mailPasswordResetToken } from "./utils/mailPasswordResetToken"
 
 let sessionSecret = process.env.SESSION_SECRET
 if (!sessionSecret && process.env.NODE_ENV !== "production") {
@@ -14,6 +15,11 @@ const { withAuth } = createAuth({
 	secretField: "password",
 	initFirstItem: {
 		fields: ["name", "email", "password"],
+	},
+	passwordResetLink: {
+		sendToken({ token, identity }) {
+			mailPasswordResetToken({ token, email: identity })
+		},
 	},
 })
 

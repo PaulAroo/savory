@@ -23,7 +23,7 @@ __export(keystone_exports, {
   default: () => keystone_default
 });
 module.exports = __toCommonJS(keystone_exports);
-var import_config2 = require("dotenv/config");
+var import_config3 = require("dotenv/config");
 var import_core2 = require("@keystone-6/core");
 
 // schema.ts
@@ -112,6 +112,50 @@ var lists = {
 var import_crypto = require("crypto");
 var import_auth = require("@keystone-6/auth");
 var import_session = require("@keystone-6/core/session");
+
+// utils/mailPasswordResetToken.ts
+var import_config2 = require("dotenv/config");
+var import_nodemailer2 = require("nodemailer");
+
+// utils/makeEmailTemplate.ts
+function makeEmailTemplate(token) {
+  return `Hello there \u{1F44B}\u{1F3FB}, this is a test`;
+}
+
+// utils/handleMailTransportError.ts
+var import_nodemailer = require("nodemailer");
+function handleMailTransportError(err, info) {
+  if (err) {
+    console.log(err);
+  }
+  if (process.env.MAIL_USER?.includes("ethereal.email")) {
+    console.log(`\u{1F4E7} Message sent! Preview at ${(0, import_nodemailer.getTestMessageUrl)(info)}`);
+  }
+}
+
+// utils/mailPasswordResetToken.ts
+function mailPasswordResetToken({
+  email,
+  token
+}) {
+  const transporter = (0, import_nodemailer2.createTransport)({
+    host: process.env.MAIL_HOST,
+    port: Number(process.env.MAIL_PORT) || 0,
+    auth: {
+      user: process.env.MAIL_USER,
+      pass: process.env.MAIL_PASS
+    }
+  });
+  const message = {
+    from: process.env.MAIL_USER,
+    to: email,
+    subject: "\u{1F50F} Password Reset",
+    html: makeEmailTemplate(token)
+  };
+  transporter.sendMail(message, handleMailTransportError);
+}
+
+// auth.ts
 var sessionSecret = process.env.SESSION_SECRET;
 if (!sessionSecret && process.env.NODE_ENV !== "production") {
   sessionSecret = (0, import_crypto.randomBytes)(32).toString("hex");
@@ -123,6 +167,11 @@ var { withAuth } = (0, import_auth.createAuth)({
   secretField: "password",
   initFirstItem: {
     fields: ["name", "email", "password"]
+  },
+  passwordResetLink: {
+    sendToken({ token, identity }) {
+      mailPasswordResetToken({ token, email: identity });
+    }
   }
 });
 var sessionMaxAge = 60 * 60 * 24 * 7;

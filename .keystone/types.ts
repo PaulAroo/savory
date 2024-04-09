@@ -23,6 +23,9 @@ export type UserWhereInput = {
   readonly name?: StringFilter | null;
   readonly email?: StringFilter | null;
   readonly createdAt?: DateTimeNullableFilter | null;
+  readonly passwordResetToken?: PasswordFilter | null;
+  readonly passwordResetIssuedAt?: DateTimeNullableFilter | null;
+  readonly passwordResetRedeemedAt?: DateTimeNullableFilter | null;
 };
 
 export type IDFilter = {
@@ -80,11 +83,17 @@ export type DateTimeNullableFilter = {
   readonly not?: DateTimeNullableFilter | null;
 };
 
+export type PasswordFilter = {
+  readonly isSet: Scalars['Boolean'];
+};
+
 export type UserOrderByInput = {
   readonly id?: OrderDirection | null;
   readonly name?: OrderDirection | null;
   readonly email?: OrderDirection | null;
   readonly createdAt?: OrderDirection | null;
+  readonly passwordResetIssuedAt?: OrderDirection | null;
+  readonly passwordResetRedeemedAt?: OrderDirection | null;
 };
 
 export type OrderDirection =
@@ -96,6 +105,9 @@ export type UserUpdateInput = {
   readonly email?: Scalars['String'] | null;
   readonly password?: Scalars['String'] | null;
   readonly createdAt?: any | null;
+  readonly passwordResetToken?: Scalars['String'] | null;
+  readonly passwordResetIssuedAt?: any | null;
+  readonly passwordResetRedeemedAt?: any | null;
 };
 
 export type UserUpdateArgs = {
@@ -108,6 +120,9 @@ export type UserCreateInput = {
   readonly email?: Scalars['String'] | null;
   readonly password?: Scalars['String'] | null;
   readonly createdAt?: any | null;
+  readonly passwordResetToken?: Scalars['String'] | null;
+  readonly passwordResetIssuedAt?: any | null;
+  readonly passwordResetRedeemedAt?: any | null;
 };
 
 export type ProductWhereUniqueInput = {
@@ -276,6 +291,11 @@ export type CreateInitialUserInput = {
   readonly password?: Scalars['String'] | null;
 };
 
+export type PasswordResetRedemptionErrorCode =
+  | 'FAILURE'
+  | 'TOKEN_EXPIRED'
+  | 'TOKEN_REDEEMED';
+
 export type KeystoneAdminUIFieldMetaIsNonNull =
   | 'read'
   | 'create'
@@ -308,6 +328,9 @@ type ResolvedUserCreateInput = {
   email?: import('@prisma/client').Prisma.UserCreateInput['email'];
   password?: import('@prisma/client').Prisma.UserCreateInput['password'];
   createdAt?: import('@prisma/client').Prisma.UserCreateInput['createdAt'];
+  passwordResetToken?: import('@prisma/client').Prisma.UserCreateInput['passwordResetToken'];
+  passwordResetIssuedAt?: import('@prisma/client').Prisma.UserCreateInput['passwordResetIssuedAt'];
+  passwordResetRedeemedAt?: import('@prisma/client').Prisma.UserCreateInput['passwordResetRedeemedAt'];
 };
 
 type ResolvedUserUpdateInput = {
@@ -316,6 +339,9 @@ type ResolvedUserUpdateInput = {
   email?: import('@prisma/client').Prisma.UserUpdateInput['email'];
   password?: import('@prisma/client').Prisma.UserUpdateInput['password'];
   createdAt?: import('@prisma/client').Prisma.UserUpdateInput['createdAt'];
+  passwordResetToken?: import('@prisma/client').Prisma.UserUpdateInput['passwordResetToken'];
+  passwordResetIssuedAt?: import('@prisma/client').Prisma.UserUpdateInput['passwordResetIssuedAt'];
+  passwordResetRedeemedAt?: import('@prisma/client').Prisma.UserUpdateInput['passwordResetRedeemedAt'];
 };
 
 type ResolvedProductCreateInput = {
@@ -357,7 +383,7 @@ export declare namespace Lists {
     export type TypeInfo<Session = any> = {
       key: 'User';
       isSingleton: false;
-      fields: 'id' | 'name' | 'email' | 'password' | 'createdAt'
+      fields: 'id' | 'name' | 'email' | 'password' | 'createdAt' | 'passwordResetToken' | 'passwordResetIssuedAt' | 'passwordResetRedeemedAt'
       item: Item;
       inputs: {
         where: UserWhereInput;
