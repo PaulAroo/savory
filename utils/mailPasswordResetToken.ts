@@ -24,7 +24,7 @@ export function mailPasswordResetToken({
 		from: process.env.MAIL_USER,
 		to: email,
 		subject: "🔏 Password Reset",
-		html: makeEmailTemplate(token),
+		html: makeEmailTemplate(token, email),
 	}
 
 	transporter.sendMail(message, handleMailTransportError)
